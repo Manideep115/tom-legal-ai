@@ -11,7 +11,7 @@ with col1:
     st.header("🔍 General Q&A")
     st.write("Ask questions about BNS, BNSS, and BSA. Perfect for quick legal research and definitions.")
     if st.button("Open Assistant"):
-        st.switch_page("pages/1_QA_Assistant.py")
+        st.switch_page("pages/1_QA_assistant.py")
 
 with col2:
     st.header("🤖 Tom: Case Dashboard")
