@@ -1,0 +1,419 @@
+# 🏛️ AI Lawyer Pro – Final Project Report
+
+## (Advanced Legal RAG System with Hybrid Retrieval)
+
+---
+
+# 📌 1. Introduction
+
+The rapid advancement of Large Language Models (LLMs) has enabled intelligent systems capable of understanding and generating human-like text. However, in domains such as **law**, accuracy, traceability, and reliability are critical. Standard LLM-based systems often suffer from **hallucinations**, lack of **source attribution**, and inability to handle **structured legal reasoning**.
+
+This project, **AI Lawyer Pro**, was developed to address these limitations by building a **Retrieval-Augmented Generation (RAG)** system specifically tailored for legal document understanding. The system evolved through multiple iterations, incorporating improvements such as **semantic retrieval, reranking, hallucination control, and Graph-based reasoning**.
+
+---
+
+# 🎯 2. Problem Statement
+
+The primary objective of this project is:
+
+> To design and implement an AI system capable of analyzing legal documents and answering queries with **high accuracy, contextual relevance, and verifiable sources**.
+
+### Key Challenges Identified:
+
+* Legal datasets are **complex and unstructured**
+* Existing datasets lack **critical metadata**
+* LLMs tend to:
+
+  * Generate **incorrect legal references**
+  * Provide **non-verifiable answers**
+* Difficulty in handling:
+
+  * Multi-step legal reasoning
+  * Large document context
+
+---
+
+# 🧱 3. Initial Approach and Limitations
+
+### 3.1 Dataset Selection (Initial Attempt)
+
+The project initially used **CSV-based datasets** containing IPC and CrPC sections.
+
+### Issues Faced:
+
+* Missing attributes such as:
+
+  * Bailable / Non-bailable classification
+  * Procedural details
+* Lack of completeness and reliability
+
+### Decision Taken:
+
+The dataset source was shifted to **Official Bare Act PDFs**, ensuring:
+
+* Authenticity
+* Completeness
+* Legal correctness
+
+---
+
+# ⚙️ 4. Data Engineering and Preprocessing
+
+### 4.1 Text Extraction
+
+* Tool used: `PyPDF2`
+* Extracted raw text from legal PDFs
+
+### 4.2 Section Segmentation
+
+Since legal documents are not cleanly structured:
+
+* Implemented **Regex-based parsing**
+* Identified section boundaries precisely
+
+### 4.3 Data Structuring
+
+Each section was transformed into structured format:
+
+* Section number
+* Content
+* Legal metadata
+
+---
+
+# ✂️ 5. Chunking Strategy
+
+### Approach:
+
+* Chunk size: 1000 characters
+* Overlap: 200 characters
+
+### Purpose:
+
+* Preserve semantic continuity
+* Avoid splitting legal definitions
+
+### Challenge:
+
+* Ensuring chunks do not break logical meaning
+
+### Outcome:
+
+* Improved context retention for retrieval
+
+---
+
+# 🧠 6. Semantic Representation (Embeddings)
+
+### Model Used:
+
+* `SentenceTransformers (all-MiniLM-L6-v2)`
+
+### Purpose:
+
+* Convert legal text into vector representations
+* Enable semantic similarity search
+
+---
+
+# 🗄️ 7. Vector Database Implementation
+
+### Database:
+
+* ChromaDB
+
+### Stored Information:
+
+* Text chunks
+* Metadata:
+
+  * law_type
+  * section
+  * classification
+
+### Benefit:
+
+* Fast and efficient semantic retrieval
+
+---
+
+# 🔍 8. Basic RAG Pipeline
+
+### Workflow:
+
+1. User query → embedding
+2. Search in vector DB
+3. Retrieve top relevant chunks
+4. Pass to LLM for answer generation
+
+### Limitation Observed:
+
+* Retrieved results were not always optimally ranked
+* Some irrelevant chunks appeared in top results
+
+---
+
+# 🎯 9. Reranking Mechanism (Improvement Phase)
+
+### Solution Implemented:
+
+* Cross-Encoder: `ms-marco-MiniLM-L-6-v2`
+
+### Function:
+
+* Re-evaluates retrieved chunks
+* Ranks them based on deeper relevance
+
+### Result:
+
+* Improved precision
+* Better answer quality
+
+---
+
+# 🤖 10. LLM Integration
+
+### Models Used:
+
+* Groq API (Llama-3.1-8b-instant)
+* Ollama (local fallback)
+
+### Role:
+
+* Generate final responses based on retrieved context
+
+---
+
+# 🚨 11. Hallucination Problem and Solution
+
+### Problem:
+
+LLMs occasionally:
+
+* Generate incorrect section numbers
+* Provide fabricated legal references
+
+### Solution:
+
+* Implemented **Regex-based validation system**
+* Cross-checked LLM output with database metadata
+
+### Outcome:
+
+* Ensured factual correctness
+* Reduced hallucination significantly
+
+---
+
+# 🖥️ 12. Frontend Development
+
+### Framework:
+
+* Streamlit
+
+### Features:
+
+* Chat-based interface
+* Authentication system
+* Session-based history
+
+### Key Feature:
+
+* Display of **source sections used in answers**
+
+---
+
+# 🔗 13. System Architecture
+
+### Design:
+
+* Microservices-based architecture
+
+### Components:
+
+* Frontend (Streamlit)
+* Backend (FastAPI)
+* Vector Database (ChromaDB)
+
+### Communication:
+
+* REST API
+
+---
+
+# ⚡ 14. Deployment Strategy
+
+### Environment:
+
+* Virtual environment (venv)
+
+### Execution:
+
+* Backend: Uvicorn (port 8000)
+* Frontend: Streamlit (port 8501)
+
+### Public Access:
+
+* Ngrok for tunneling
+
+---
+
+# 🔄 15. Experimental Phase: Page-Based Retrieval
+
+### Approach:
+
+* Indexed documents page-wise instead of chunking
+
+### Advantages:
+
+* Better context preservation
+* Easier referencing
+
+### Limitations:
+
+* Increased computational cost
+* Inefficient for large-scale use
+
+### Conclusion:
+
+* Not adopted as primary method
+
+---
+
+# ⚖️ 16. Legal Framework Transition
+
+### Update:
+
+* Shift from IPC/CrPC to:
+
+  * BNS
+  * BNSS
+  * BSA
+
+### Importance:
+
+* Ensures system relevance with updated laws
+
+---
+
+# 🧬 17. Hybrid RAG (Vector + Graph)
+
+### Motivation:
+
+* Vector search lacks relational understanding
+
+### Implementation:
+
+* Graph using NetworkX
+
+### Graph Details:
+
+* Nodes: Legal sections
+* Edges:
+
+  * PART_OF_CHAPTER
+  * REFERENCES
+
+### Outcome:
+
+* Enabled multi-hop reasoning
+* Improved contextual understanding
+
+---
+
+# 🧠 18. Prompt Engineering
+
+### Techniques Used:
+
+#### 1. Zero Temperature
+
+* Ensures deterministic outputs
+
+#### 2. Relevancy Filtering
+
+* Ignores irrelevant retrieved data
+
+#### 3. Structured Output
+
+* Enforced JSON schema using few-shot prompting
+
+---
+
+# 📊 19. Visualization Module
+
+### Tool:
+
+* Plotly
+
+### Visualizations:
+
+* Timeline (scatter plot)
+* Risk score (gauge chart)
+* Section impact (bar chart)
+
+---
+
+# 🛡️ 20. Error Handling and Stability
+
+### Issues:
+
+* Inconsistent LLM output
+* Missing fields
+* Invalid keys
+
+### Solutions:
+
+* Schema validation
+* Auto-correction logic
+* Safe fallbacks
+
+---
+
+# 🧩 21. OCR Integration
+
+### Problem:
+
+* Some PDFs were scanned images
+
+### Solution:
+
+* Dual pipeline:
+
+  1. Text extraction
+  2. OCR fallback (Tesseract)
+
+---
+
+# 🏁 22. Final System Capabilities
+
+The system is capable of:
+
+* Understanding legal documents
+* Semantic retrieval of laws
+* Multi-step reasoning using GraphRAG
+* Providing verifiable answers
+* Generating structured outputs
+* Visualizing legal insights
+
+---
+
+# 🚀 23. Conclusion
+
+The project successfully demonstrates the design of an **advanced legal AI system** that overcomes major limitations of traditional LLM applications. Through iterative improvements and architectural enhancements, the system evolved into a **reliable, explainable, and scalable solution**.
+
+---
+
+# 🔮 24. Future Enhancements
+
+* Integration of hybrid search (BM25 + semantic)
+* Expansion of legal datasets
+* UI improvements for better interaction
+* Enhanced graph-based reasoning
+
+---
+
+# 🎯 Final Statement
+
+> This project represents a complete end-to-end implementation of a Legal AI system, evolving from basic retrieval techniques to a hybrid architecture combining semantic and relational intelligence, with strong emphasis on accuracy, explainability, and real-world applicability.
+
+---
