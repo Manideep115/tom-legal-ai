@@ -7,6 +7,7 @@ pytesseract
 pdf2image
 plotly
 pandas
+groq
 python-dotenv
 sentence-transformers
 protobuf==3.20.3
