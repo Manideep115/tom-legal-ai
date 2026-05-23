@@ -1,0 +1,11 @@
+streamlit
+openai
+chromadb
+networkx
+pdfplumber
+pytesseract
+pdf2image
+plotly
+pandas
+python-dotenv
+sentence-transformers
