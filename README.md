@@ -80,8 +80,6 @@ Visualization (Plotly)
 
 
 
-
-
 ## 🛠️ Technology Stack
 
 ### 🔹 Frontend
@@ -112,9 +110,8 @@ Visualization (Plotly)
 * Pandas
 
 ---
-
+```
 ## 📂 Project Structure
-
 
 ├── data/
 │   ├── master_legal_v1.json      # Structured legal dataset (BNS, BNSS, BSA)
@@ -130,7 +127,7 @@ Visualization (Plotly)
 ├── packages.txt                  # System dependencies (OCR)
 └── README.md
 
-
+```
 
 ## ⚙️ Installation & Setup
 
@@ -232,6 +229,7 @@ streamlit run frontend/pages/2_tom_deep_dashboard.py
 
 This project transforms a standard RAG pipeline into a Hybrid GraphRAG system by integrating semantic retrieval, graph-based reasoning, and deterministic LLM constraints to build a reliable and explainable Legal AI assistant.
 
+##demo link: https://tom-legal-ai-legalassistant.streamlit.app
 ---
 
 ### 👨‍💻 Author
